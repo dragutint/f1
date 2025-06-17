@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  f1-database:
+    image: postgres:14.1-alpine
+    container_name: f1-database
+    restart: always
+    environment:
+      POSTGRES_USER: f1
+      POSTGRES_PASSWORD: f1
+      POSTGRES_DB: f1
+    ports:
+      - '5432:5432'

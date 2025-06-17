@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1-init-table" author="dragutin">
+
+        <createTable tableName="users">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="balance" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint columnNames="username" constraintName="uk_users_username" tableName="users"/>
+    </changeSet>
+
+    <changeSet id="2-init-users" author="dragutin">
+        <sql>
+            INSERT INTO users (id, username, balance) VALUES
+            (1, 'alice', 100.0),
+            (2, 'bob', 100.0),
+            (3, 'charlie', 100.0),
+            (4, 'dave', 100.0);
+        </sql>
+    </changeSet>
+
+    <changeSet id="3-init-bets" author="dragutin">
+
+        <createTable tableName="bets">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_bets"/>
+            </column>
+            <column name="event_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="driver_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="odd" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="bets" constraintName="FK_BETS_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+
+</databaseChangeLog>
